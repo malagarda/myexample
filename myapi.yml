@@ -1,0 +1,107 @@
+openapi: 3.0.2
+info:
+  title: My API
+  version: 1.1.0
+  description: My API
+paths:
+  /api/rest/v1/searches:
+    post:
+      summary: Search
+      operationId: example-searches
+      description: Search
+      responses:
+        '200':
+          $ref: '#/components/responses/MyResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Search'
+            examples:
+              minimal:
+                value:
+                  field01: 1
+                  field02: 11
+                  field03:
+                    - 27
+                    - 28
+                    - 29
+                    - 30
+      security:
+        - basicAuth: []
+components:
+  schemas:
+    MyResponseModel:
+      title: ResponseModel
+      type: object
+      properties:
+        responseItems:
+          type: array
+          items:
+            type: object
+            properties:
+              field01:
+                type: integer
+              field02:
+                type: array
+                items:
+                  type: integer
+              field03:
+                type: integer
+            required:
+              - field01
+              - field02
+              - field03
+      required:
+        - responseItems
+    Search:
+      title: Search
+      type: object
+      properties:
+        field01:
+          type: integer
+        field02:
+          type: integer
+        field03:
+          type: array
+          items:
+            type: integer
+      required:
+        - field01
+        - field02
+        - field03
+  responses:
+    MyResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MyResponseModel'
+          examples:
+            single-response:
+              $ref: '#/components/examples/single'
+            multiple-response:
+              $ref: '#/components/examples/multiple'
+  examples:
+    single:
+      value:
+        responseItems:
+          - field01: 1234567
+            field02:
+              - 123
+              - 456
+            field03: 11
+    multiple:
+      value:
+        responseItems:
+          - field01: 4567890
+            field02:
+              - 987
+              - 876
+            field03: 11
+          - field01: 1111111
+            field02:
+              - 970
+              - 974
+            field03: 12
